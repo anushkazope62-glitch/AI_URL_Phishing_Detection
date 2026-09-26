@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI URL Security Scanner</title>
+
+    <link rel="stylesheet" href="/frontend/style.css">
+
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-icon">
+                🛡️
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    URL Security
+                </div>
+
+                <div class="logo-subtitle">
+                    AI Threat Detection
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+    <button class="nav-btn active" onclick="showSection('home')">
+        🏠 Home
+    </button>
+
+    <button class="nav-btn" onclick="showSection('dashboard')">
+        📊 Dashboard
+    </button>
+
+    <button class="nav-btn" onclick="showSection('history')">
+        📜 History
+    </button>
+
+    <button class="nav-btn" onclick="showSection('about')">
+        ℹ️ About
+    </button>
+
+    <button class="nav-btn" onclick="showSection('profile')">
+        👤 Profile
+    </button>
+
+    <button class="nav-btn" onclick="openSettings()">
+        ⚙️ Settings
+    </button>
+</nav>
+
+        <!-- ================= SIGN IN ================= -->
+
+        <button
+            class="sign-in-button"
+            onclick="openLogin()"
+        >
+            🔐 Sign In
+        </button>
+
+
+        <div class="online-status">
+
+            <span class="online-dot"></span>
+
+            Scanner Online
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <!-- ================= HOME ================= -->
+
+        <section id="home" class="page-section active-section">
+
+            <div class="hero">
+
+                <div class="shield-big">
+                    🛡️
+                </div>
+
+                <div class="security-badge">
+                    AI-POWERED SECURITY
+                </div>
+
+                <h1>
+
+                    Detect
+                    <span>Phishing URLs</span>
+
+                    <br>
+
+                    Before They Harm You
+
+                </h1>
+
+                <p>
+
+                    Analyze website URLs using machine learning
+                    and identify potentially dangerous phishing threats.
+
+                </p>
+
+            </div>
+
+
+            <!-- ================= STATISTICS ================= -->
+
+            <div class="stats-container">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🔍
+                    </div>
+
+                    <div>
+
+                        <span>Total Scans</span>
+
+                        <strong id="totalScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon safe-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span>Safe URLs</span>
+
+                        <strong id="safeScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon threat-icon">
+                        ⚠
+                    </div>
+
+                    <div>
+
+                        <span>Threats Detected</span>
+
+                        <strong id="threatScans">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SCANNER ================= -->
+
+            <div class="scanner-card">
+
+                <label for="urlInput">
+                    🔗 Enter Website URL
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <span>
+                        🌐
+                    </span>
+
+                    <input
+                        type="text"
+                        id="urlInput"
+                        placeholder="https://example.com"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    id="scanButton"
+                    onclick="checkURL()"
+                >
+
+                    🔍 Scan URL
+
+                </button>
+
+
+                <div class="example-area">
+
+                    <span>
+                        Try an example:
+                    </span>
+
+                    <button onclick="useExample('https://www.google.com')">
+                        Google
+                    </button>
+
+                    <button onclick="useExample('https://www.microsoft.com')">
+                        Microsoft
+                    </button>
+
+                    <button onclick="useExample('http://free-iphone-claim-login-secure.xyz')">
+                        Suspicious URL
+                    </button>
+
+                </div>
+
+
+                <div class="privacy-note">
+
+                    🔒 URL is analyzed by the local machine learning system.
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RESULT ================= -->
+
+            <div id="result"></div>
+
+
+            <!-- ================= RECENT SCANS ================= -->
+
+            <div class="recent-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Recent Scans
+                        </h2>
+
+                        <p>
+                            Your latest URL security checks
+                        </p>
+
+                    </div>
+
+                    <button onclick="showSection('history')">
+                        View All →
+                    </button>
+
+                </div>
+
+
+                <div id="recentScans">
+
+                    <div class="empty-history">
+
+                        🔍
+
+                        <p>
+                            No scans yet
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= HOW IT WORKS ================= -->
+
+            <section class="how-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        How It Works
+                    </h2>
+
+                    <p>
+                        Protect yourself in three simple steps.
+                    </p>
+
+                </div>
+
+
+                <div class="steps">
+
+                    <div class="step-card">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <div class="step-icon">
+                            🔗
+                        </div>
+
+                        <h3>
+                            Enter URL
+                        </h3>
+
+                        <p>
+                            Enter or paste the website URL
+                            you want to analyze.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step-card">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <div class="step-icon">
+                            🤖
+                        </div>
+
+                        <h3>
+                            AI Analysis
+                        </h3>
+
+                        <p>
+                            Machine learning analyzes URL
+                            characteristics and patterns.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step-card">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <div class="step-icon">
+                            🛡️
+                        </div>
+
+                        <h3>
+                            Get Protection Result
+                        </h3>
+
+                        <p>
+                            Receive a security classification,
+                            confidence and threat analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ================= HISTORY ================= -->
+
+        <section id="history" class="page-section">
+
+            <div class="inner-page">
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <div class="page-badge">
+                            📜 SCAN HISTORY
+                        </div>
+
+                        <h1>
+                            Your Scan History
+                        </h1>
+
+                        <p>
+                            Review URLs previously analyzed by the scanner.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="danger-button"
+                        onclick="clearHistory()"
+                    >
+                        🗑️ Clear History
+                    </button>
+
+                </div>
+
+
+                <div id="historyList">
+
+                    <div class="empty-history large-empty">
+
+                        📜
+
+                        <h3>
+                            No Scan History
+                        </h3>
+
+                        <p>
+                            URLs that you scan will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section id="about" class="page-section">
+
+            <div class="inner-page">
+
+                <div class="page-heading center-heading">
+
+                    <div class="page-badge">
+                        ℹ️ ABOUT THE PROJECT
+                    </div>
+
+                    <h1>
+                        AI URL Security Scanner
+                    </h1>
+
+                    <p>
+                        A machine-learning based system designed
+                        to identify potentially malicious URLs.
+                    </p>
+
+                </div>
+
+
+                <div class="about-grid">
+
+                    <div class="about-card">
+
+                        <div class="about-icon">
+                            🤖
+                        </div>
+
+                        <h3>
+                            Machine Learning
+                        </h3>
+
+                        <p>
+                            A Random Forest classification model
+                            analyzes URL-based features to classify
+                            URLs as phishing or legitimate.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-card">
+
+                        <div class="about-icon">
+                            🔎
+                        </div>
+
+                        <h3>
+                            URL Analysis
+                        </h3>
+
+                        <p>
+                            The system examines characteristics such
+                            as URL length, HTTPS usage, domain patterns,
+                            suspicious keywords and obfuscation.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-card">
+
+                        <div class="about-icon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            FastAPI Backend
+                        </h3>
+
+                        <p>
+                            FastAPI provides the API layer connecting
+                            the web interface with the machine learning
+                            prediction system.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-card">
+
+                        <div class="about-icon">
+                            🛡️
+                        </div>
+
+                        <h3>
+                            Security Awareness
+                        </h3>
+
+                        <p>
+                            The application helps users identify
+                            suspicious URLs before interacting with
+                            potentially harmful websites.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="disclaimer">
+
+                    <strong>
+                        ⚠️ Security Disclaimer
+                    </strong>
+
+                    <p>
+                        This application is a machine-learning based
+                        security prototype. A "Legitimate" result does
+                        not guarantee that a website is completely safe.
+                        Users should always verify unfamiliar websites
+                        before entering sensitive information.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================================= -->
+<!-- DASHBOARD -->
+<!-- ================================= -->
+
+<section id="dashboard" class="page-section">
+
+    <div class="inner-page">
+
+        <!-- Dashboard Header -->
+
+        <div class="page-heading">
+
+            <div>
+
+                <div class="page-badge">
+                    📊 SECURITY DASHBOARD
+                </div>
+
+                <h1>
+                    Security Overview
+                </h1>
+
+                <p>
+                    Monitor your URL scanning activity and security threats.
+                </p>
+
+            </div>
+
+            <button
+                class="dashboard-scan-button"
+                onclick="showSection('home')"
+            >
+                🔍 Scan New URL
+            </button>
+
+        </div>
+
+
+        <!-- Dashboard Statistics -->
+
+        <div class="dashboard-stats">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-card-top">
+
+                    <div class="dashboard-icon">
+                        🔍
+                    </div>
+
+                    <span class="dashboard-label">
+                        TOTAL SCANS
+                    </span>
+
+                </div>
+
+                <strong id="dashboardTotal">
+                    0
+                </strong>
+
+                <p>
+                    URLs analyzed
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card safe-dashboard">
+
+                <div class="dashboard-card-top">
+
+                    <div class="dashboard-icon">
+                        ✓
+                    </div>
+
+                    <span class="dashboard-label">
+                        SAFE URLS
+                    </span>
+
+                </div>
+
+                <strong id="dashboardSafe">
+                    0
+                </strong>
+
+                <p>
+                    Legitimate URLs
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card threat-dashboard">
+
+                <div class="dashboard-card-top">
+
+                    <div class="dashboard-icon">
+                        ⚠
+                    </div>
+
+                    <span class="dashboard-label">
+                        THREATS
+                    </span>
+
+                </div>
+
+                <strong id="dashboardThreats">
+                    0
+                </strong>
+
+                <p>
+                    Phishing URLs
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card risk-dashboard">
+
+                <div class="dashboard-card-top">
+
+                    <div class="dashboard-icon">
+                        🛡️
+                    </div>
+
+                    <span class="dashboard-label">
+                        THREAT RATE
+                    </span>
+
+                </div>
+
+                <strong id="dashboardThreatRate">
+                    0%
+                </strong>
+
+                <p>
+                    Of total scans
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Main Dashboard Grid -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- Scan Distribution -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Scan Distribution
+                        </h2>
+
+                        <p>
+                            Overview of detected URLs
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="distribution-container">
+
+                    <div class="distribution-circle">
+
+                        <div>
+
+                            <strong id="safePercentage">
+                                0%
+                            </strong>
+
+                            <span>
+                                Safe
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-legend">
+
+                        <div class="legend-item">
+
+                            <span class="legend-dot safe-dot"></span>
+
+                            <div>
+
+                                <strong>
+                                    Legitimate
+                                </strong>
+
+                                <p id="safeLegend">
+                                    0 scans
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="legend-item">
+
+                            <span class="legend-dot threat-dot"></span>
+
+                            <div>
+
+                                <strong>
+                                    Phishing
+                                </strong>
+
+                                <p id="threatLegend">
+                                    0 scans
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Security Summary -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Security Summary
+                        </h2>
+
+                        <p>
+                            Current protection status
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-summary">
+
+                    <div class="summary-row">
+
+                        <span>
+                            Total URLs Scanned
+                        </span>
+
+                        <strong id="summaryTotal">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Legitimate URLs
+                        </span>
+
+                        <strong class="safe-text" id="summarySafe">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Phishing URLs
+                        </span>
+
+                        <strong class="threat-text" id="summaryThreats">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Threat Detection Rate
+                        </span>
+
+                        <strong id="summaryRate">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+
+                        <strong>
+                            Scanner Active
+                        </strong>
+
+                        <p>
+                            AI security system is ready
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================= -->
+<!-- SCAN ACTIVITY -->
+<!-- ================================= -->
+
+<div class="dashboard-panel scan-activity-panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h2>
+                📈 Scan Activity
+            </h2>
+
+            <p>
+                URLs scanned during the last 7 days
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="activity-chart">
+
+        <div class="activity-bars" id="activityBars">
+            <!-- Chart will be generated by JavaScript -->
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- Recent Dashboard Scans -->
+
+        <div class="dashboard-panel recent-dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Recent Security Scans
+                    </h2>
+
+                    <p>
+                        Latest URL analysis activity
+                    </p>
+
+                </div>
+
+                <button
+                    class="view-history-button"
+                    onclick="showSection('history')"
+                >
+                    View History →
+                </button>
+
+            </div>
+
+
+            <div id="dashboardRecentScans">
+
+                <div class="dashboard-empty">
+
+                    🔍
+
+                    <p>
+                        No scans available yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        <!-- ================================= -->
+        <!-- PROFILE SECTION -->
+        <!-- ================================= -->
+
+        <section id="profile" class="page-section">
+
+            <div class="inner-page">
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <div class="page-badge">
+                            👤 USER PROFILE
+                        </div>
+
+                        <h1>
+                            Security Profile
+                        </h1>
+
+                        <p>
+                            Manage your account details, personal security settings, and scan statistics.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="dashboard-scan-button"
+                        onclick="showSection('home')"
+                    >
+                        🔍 Scan New URL
+                    </button>
+
+                </div>
+
+
+                <div class="profile-layout">
+
+                    <!-- Left Column: User Card & Profile Edit -->
+                    <div class="profile-left-col">
+
+                        <!-- Hero Profile Card -->
+                        <div class="profile-card profile-hero-card">
+
+                            <div class="profile-avatar-container">
+
+                                <div class="profile-avatar" id="profileAvatarLarge">
+                                    👩‍💻
+                                </div>
+
+                                <span class="profile-online-badge" title="Active Scanner"></span>
+
+                            </div>
+
+                            <div class="profile-info-header">
+
+                                <div class="profile-name-row">
+
+                                    <h2 id="profileDisplayName">Anushka</h2>
+
+                                    <span class="profile-tag" id="profileDisplayTag">Security Analyst</span>
+
+                                </div>
+
+                                <p id="profileDisplayEmail" class="profile-email">anushka@gmail.com</p>
+
+                                <p id="profileDisplayBio" class="profile-bio">Threat Intelligence & URL Safety Explorer</p>
+
+                                <div class="profile-badges-strip">
+
+                                    <span class="badge-chip">🛡️ Pro Tier</span>
+
+                                    <span class="badge-chip">🔒 AI Shield Active</span>
+
+                                    <span class="badge-chip" id="profileMemberSince">📅 Member since 2026</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Edit Profile Form Card -->
+                        <div class="profile-card profile-edit-card">
+
+                            <div class="card-section-header">
+
+                                <h3>✏️ Personal Details</h3>
+
+                                <p>Update your display name, email, and security analyst role</p>
+
+                            </div>
+
+                            <form id="profileForm" onsubmit="saveProfileDetails(event)">
+
+                                <div class="profile-form-grid">
+
+                                    <div class="profile-form-group">
+
+                                        <label for="profileInputName">Full Name</label>
+
+                                        <div class="input-icon-wrapper">
+
+                                            <span>👤</span>
+
+                                            <input
+                                                type="text"
+                                                id="profileInputName"
+                                                value="Anushka"
+                                                placeholder="Enter full name"
+                                                required
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="profile-form-group">
+
+                                        <label for="profileInputEmail">Email Address</label>
+
+                                        <div class="input-icon-wrapper">
+
+                                            <span>📧</span>
+
+                                            <input
+                                                type="email"
+                                                id="profileInputEmail"
+                                                value="anushka@gmail.com"
+                                                placeholder="Enter email"
+                                                required
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="profile-form-group">
+
+                                        <label for="profileInputRole">Security Role / Title</label>
+
+                                        <div class="input-icon-wrapper">
+
+                                            <span>💼</span>
+
+                                            <input
+                                                type="text"
+                                                id="profileInputRole"
+                                                value="AI Security Analyst"
+                                                placeholder="e.g. AI Security Analyst"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="profile-form-group">
+
+                                        <label for="profileInputBio">Bio / Specialization</label>
+
+                                        <div class="input-icon-wrapper">
+
+                                            <span>📝</span>
+
+                                            <input
+                                                type="text"
+                                                id="profileInputBio"
+                                                value="Threat Intelligence & URL Safety Explorer"
+                                                placeholder="Short description"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-btn-group">
+
+                                    <button type="submit" class="profile-save-btn">
+                                        💾 Save Profile
+                                    </button>
+
+                                    <button type="button" class="profile-reset-btn" onclick="resetProfileDetails()">
+                                        🔄 Reset to Default
+                                    </button>
+
+                                </div>
+
+                                <p id="profileSaveMessage" class="profile-message"></p>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Right Column: Stats, Security Badges & Actions -->
+                    <div class="profile-right-col">
+
+                        <!-- Scan Stats Card -->
+                        <div class="profile-card">
+
+                            <div class="card-section-header">
+
+                                <h3>📊 Scan Statistics</h3>
+
+                                <p>Your personal URL inspection summary</p>
+
+                            </div>
+
+                            <div class="profile-stats-grid">
+
+                                <div class="profile-stat-box">
+
+                                    <div class="stat-box-icon">🔍</div>
+
+                                    <div>
+
+                                        <span class="stat-box-label">Total Scans</span>
+
+                                        <strong class="stat-box-value" id="profileTotalScans">0</strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-stat-box profile-safe-box">
+
+                                    <div class="stat-box-icon">✓</div>
+
+                                    <div>
+
+                                        <span class="stat-box-label">Safe URLs</span>
+
+                                        <strong class="stat-box-value" id="profileSafeScans">0</strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-stat-box profile-threat-box">
+
+                                    <div class="stat-box-icon">⚠</div>
+
+                                    <div>
+
+                                        <span class="stat-box-label">Threats Detected</span>
+
+                                        <strong class="stat-box-value" id="profileThreatScans">0</strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-stat-box profile-blocked-box">
+
+                                    <div class="stat-box-icon">🚫</div>
+
+                                    <div>
+
+                                        <span class="stat-box-label">Blocked URLs</span>
+
+                                        <strong class="stat-box-value" id="profileBlockedScans">0</strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-stat-box profile-score-box">
+
+                                    <div class="stat-box-icon">🛡️</div>
+
+                                    <div>
+
+                                        <span class="stat-box-label">Safety Score</span>
+
+                                        <strong class="stat-box-value" id="profileSecurityScore">100%</strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Security Badges Card -->
+                        <div class="profile-card">
+
+                            <div class="card-section-header">
+
+                                <h3>🎖️ Earned Badges</h3>
+
+                                <p>Cybersecurity achievements & milestones</p>
+
+                            </div>
+
+                            <div class="profile-badges-list">
+
+                                <div class="profile-badge-item">
+
+                                    <div class="badge-icon-wrap">🛡️</div>
+
+                                    <div class="badge-details">
+
+                                        <strong>Cyber Guardian</strong>
+
+                                        <span>Active real-time URL heuristic protection</span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-badge-item">
+
+                                    <div class="badge-icon-wrap">🤖</div>
+
+                                    <div class="badge-details">
+
+                                        <strong>AI Investigator</strong>
+
+                                        <span>Machine learning phishing classifier access</span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-badge-item">
+
+                                    <div class="badge-icon-wrap">🎯</div>
+
+                                    <div class="badge-details">
+
+                                        <strong>Threat Hunter</strong>
+
+                                        <span>Obfuscated pattern & IP detector</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Quick Actions Card -->
+                        <div class="profile-card">
+
+                            <div class="card-section-header">
+
+                                <h3>⚡ Account Actions</h3>
+
+                                <p>Manage data & scanner tools</p>
+
+                            </div>
+
+                            <div class="profile-actions-stack">
+
+                                <button class="profile-action-btn" onclick="exportScanReport()">
+                                    📄 Export Scan Report (PDF)
+                                </button>
+
+                                <button class="profile-action-btn" onclick="showSection('history')">
+                                    📜 View Complete History
+                                </button>
+
+                                <button class="profile-action-btn" onclick="openSettings()">
+                                    ⚙️ App Settings & Theme
+                                </button>
+
+                                <button class="profile-action-btn action-danger" onclick="clearHistory()">
+                                    🗑️ Clear History
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= LOGIN MODAL ================= -->
+
+<div id="loginModal" class="modal">
+
+    <div class="modal-box login-box">
+
+        <!-- Login Header -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    🔐 Sign In
+                </h2>
+
+                <p>
+                    Sign in to your security dashboard
+                </p>
+
+            </div>
+
+            <button onclick="closeLogin()">
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- Login Form -->
+
+        <div class="login-form">
+
+            <label for="loginEmail">
+                📧 Email
+            </label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter your email"
+                autocomplete="email"
+            >
+
+
+            <label for="loginPassword">
+                🔑 Password
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+
+            
+            >
+
+
+          <button
+    class="login-button"
+    onclick="loginUser()"
+>
+    🔐 Sign In
+</button>
+
+            <p
+                id="loginMessage"
+                class="login-message"
+            ></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ACCOUNT MENU ================= -->
+
+<div id="accountMenu" class="account-menu">
+
+    <!-- User Info -->
+    <div class="account-info">
+        <div class="account-avatar">👩‍💻</div>
+
+        <div class="account-user-details">
+            <strong id="accountName">Anushka</strong>
+            <span id="accountEmail">anushka@gmail.com</span>
+        </div>
+    </div>
+
+    <div class="account-divider"></div>
+
+    <!-- Account Options -->
+    <button class="account-option" onclick="showSection('dashboard'); openAccountMenu();">
+        📊 <span>Dashboard</span>
+    </button>
+
+    <button class="account-option" onclick="showSection('history'); openAccountMenu();">
+        📜 <span>Scan History</span>
+    </button>
+
+    <button class="account-option" onclick="openSettings(); openAccountMenu();">
+        ⚙️ <span>Settings</span>
+    </button>
+
+    <button class="account-option" onclick="showProfile();">
+        👤 <span>My Profile</span>
+    </button>
+
+    <div class="account-divider"></div>
+
+    <!-- Logout -->
+    <button class="account-logout" onclick="logoutUser()">
+        🚪 <span>Logout</span>
+    </button>
+
+</div>
+
+
+    <!-- ================= SETTINGS MODAL ================= -->
+
+    <div id="settingsModal" class="modal">
+
+        <div class="modal-box settings-modal-box">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        ⚙️ Scanner Settings
+                    </h2>
+
+                    <p>
+                        Configure AI detection heuristics, appearance & data preferences
+                    </p>
+
+                </div>
+
+                <button onclick="closeSettings()" title="Close Settings">
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div class="settings-content-scroll">
+
+                <!-- 1. APPEARANCE SECTION -->
+                <div class="setting-category-badge">🎨 APPEARANCE</div>
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Interface Theme
+                        </strong>
+
+                        <span>
+                            Toggle between cyber dark and daylight mode
+                        </span>
+
+                    </div>
+
+                    <button
+                        id="themeButton"
+                        class="setting-button"
+                        onclick="toggleTheme()"
+                    >
+                        🌙 Dark
+                    </button>
+
+                </div>
+
+
+                <!-- 2. AI ENGINE & SECURITY -->
+                <div class="setting-category-badge">🛡️ AI SECURITY ENGINE</div>
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            AI Sensitivity Mode
+                        </strong>
+
+                        <span>
+                            Heuristic strictness for unknown or new domains
+                        </span>
+
+                    </div>
+
+                    <select
+                        id="settingSensitivity"
+                        class="setting-select"
+                        onchange="saveScannerSettings()"
+                    >
+                        <option value="standard">Standard Balanced</option>
+                        <option value="strict">Strict (High Threat Protection)</option>
+                        <option value="permissive">Permissive (Fewer Warnings)</option>
+                    </select>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Strict HTTPS Warning
+                        </strong>
+
+                        <span>
+                            Display security warning on unencrypted HTTP links
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="httpsWarningToggle"
+                            checked
+                            onchange="saveScannerSettings()"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Threat Audio Alert
+                        </strong>
+
+                        <span>
+                            Play sound notification when phishing is detected
+                        </span>
+
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 10px;">
+
+                        <button
+                            type="button"
+                            class="setting-action-btn"
+                            onclick="testThreatAlertSound()"
+                            title="Preview threat alarm sound"
+                            style="padding: 6px 12px; font-size: 0.8rem; font-weight: 600;"
+                        >
+                            🔊 Test
+                        </button>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="soundAlertToggle"
+                                checked
+                                onchange="saveScannerSettings()"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 3. DATA & HISTORY MANAGEMENT -->
+                <div class="setting-category-badge">📜 DATA & LOGS</div>
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Auto-Save Scan History
+                        </strong>
+
+                        <span>
+                            Store analyzed URL logs in browser storage
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="historyToggle"
+                            checked
+                            onchange="toggleHistorySetting()"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Export Scan Logs
+                        </strong>
+
+                        <span>
+                            Download complete history for audit reports
+                        </span>
+
+                    </div>
+
+                    <div class="setting-btn-group">
+
+                        <button
+                            class="setting-action-btn"
+                            onclick="exportHistoryJSON()"
+                            title="Export as JSON file"
+                        >
+                            📥 JSON
+                        </button>
+
+                        <button
+                            class="setting-action-btn"
+                            onclick="exportHistoryCSV()"
+                            title="Export as CSV spreadsheet"
+                        >
+                            📊 CSV
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Clear All Saved Data
+                        </strong>
+
+                        <span>
+                            Permanently wipe scan history and cached logs
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="delete-button"
+                        onclick="clearHistory(); closeSettings();"
+                    >
+                        🗑️ Clear
+                    </button>
+
+                </div>
+
+
+                <!-- 4. BLOCKED PHISHING URLS (BLACKLIST) -->
+                <div class="setting-category-badge">🚫 BLOCKED URLS & BLACKLIST</div>
+
+                <div class="setting-row" style="flex-direction: column; align-items: stretch; gap: 10px;">
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+
+                        <div>
+                            <strong>Threat Blacklist Manager</strong>
+                            <span>Prevent access to dangerous and blocked links</span>
+                        </div>
+
+                        <span class="blocked-count-pill" id="settingsBlockedCount">0 Blocked</span>
+
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-top: 4px;">
+
+                        <input
+                            type="text"
+                            id="manualBlockInput"
+                            placeholder="Enter URL or domain to block (e.g. badsite.com)"
+                            style="flex: 1; height: 38px; font-size: 12px; padding: 0 12px;"
+                        >
+
+                        <button
+                            type="button"
+                            class="setting-action-btn"
+                            onclick="addManualBlockedURL()"
+                            style="background: #ef4444; color: #ffffff; border: none; padding: 0 14px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer;"
+                        >
+                            🚫 Block
+                        </button>
+
+                    </div>
+
+                    <div id="settingsBlockedList" class="settings-blocked-list" style="max-height: 150px; overflow-y: auto; margin-top: 6px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.18); padding: 8px;">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 2px;">
+
+                        <button
+                            type="button"
+                            class="delete-button"
+                            style="font-size: 11px; padding: 6px 12px;"
+                            onclick="clearAllBlockedURLs()"
+                        >
+                            🗑️ Clear Blocklist
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <p id="settingsSaveStatus" class="settings-status-msg"></p>
+
+            <button
+                class="close-settings"
+                onclick="closeSettings()"
+            >
+                ✓ Done
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div>
+            🛡️ AI URL Security Scanner
+        </div>
+
+        <span>
+            Python • FastAPI • Machine Learning • JavaScript
+        </span>
+
+        <small>
+            Built for cybersecurity awareness and phishing detection.
+        </small>
+
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="/frontend/script.js"></script>
+
+</body>
+
+</html>
