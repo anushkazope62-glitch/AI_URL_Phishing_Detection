@@ -70,7 +70,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
     setWebpageAnalysis(null);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/screenshot", {
+      const response = await fetch("https://ai-url-phishing-detection.onrender.com/screenshot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +117,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
     try {
       // Small natural loading delay so the scanning feels realistic & thorough
       const [response] = await Promise.all([
-        fetch("http://127.0.0.1:8000/predict", {
+        fetch("https://ai-url-phishing-detection.onrender.com/predict", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -551,7 +551,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
                   title="Click to view enlarged screenshot"
                 >
                   <img
-                    src={`http://127.0.0.1:8000${webpageAnalysis.screenshot_url}`}
+                    src={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
                     alt="Visual Analysis Screenshot"
                     className="webpage-screenshot"
                   />
@@ -608,7 +608,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
               </div>
               <div className="screenshot-modal-actions">
                 <a
-                  href={`http://127.0.0.1:8000${webpageAnalysis.screenshot_url}`}
+                  href={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="screenshot-modal-newtab-btn"
@@ -628,7 +628,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
 
             <div className="screenshot-modal-image-wrapper">
               <img
-                src={`http://127.0.0.1:8000${webpageAnalysis.screenshot_url}`}
+                src={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
                 alt="Enlarged Webpage Screenshot"
                 className="screenshot-modal-image"
               />
