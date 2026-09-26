@@ -63,7 +63,7 @@ function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "register" })
 
       setLoading(true);
       try {
-        const response = await fetch("http://127.0.0.1:8000/register", {
+        const response = await fetch("https://ai-url-phishing-detection.onrender.com/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -95,7 +95,7 @@ function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "register" })
       // Login mode
       setLoading(true);
       try {
-        const response = await fetch("http://127.0.0.1:8000/login", {
+        const response = await fetch("https://ai-url-phishing-detection.onrender.com/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
