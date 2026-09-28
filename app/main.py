@@ -750,13 +750,9 @@ def take_screenshot(request: URLRequest):
 
             page = context.new_page()
 
-            page.goto(
-                url,
-                wait_until="domcontentloaded",
-                timeout=9000
-            )
+            page.goto(url, wait_until="networkidle", timeout=30000)
 
-            page.wait_for_timeout(300)
+            page.wait_for_timeout(3000)
 
             page_title = page.title() or "Untitled Page"
 
@@ -778,10 +774,7 @@ def take_screenshot(request: URLRequest):
             ).count()
 
             # Capture screenshot
-            page.screenshot(
-                path=filepath,
-                full_page=False
-            )
+            page.screenshot(path=filepath, full_page=True)
 
             context.close()
             browser.close()
