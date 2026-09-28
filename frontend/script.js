@@ -300,7 +300,7 @@ async function checkURL() {
 
         const response =
             await fetch(
-                "http://127.0.0.1:8000/predict",
+                "/predict",
                 {
 
                     method: "POST",
@@ -2319,7 +2319,7 @@ function closeLogin() {
 /* LOGIN USER */
 /* ================================= */
 
-function loginUser() {
+async function loginUser() {
 
     const email =
         document.getElementById("loginEmail").value.trim();
@@ -2343,50 +2343,44 @@ function loginUser() {
         return;
     }
 
+    message.textContent = "⏳ Verifying credentials...";
+    message.style.color = "#2563eb";
 
-    /* Demo Login */
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
 
-    if (
-        email === "admin@gmail.com" &&
-        password === "123456"
-    ) {
+        const data = await response.json();
 
-        localStorage.setItem(
-            "isLoggedIn",
-            "true"
-        );
+        if (data.success && data.user) {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("loggedInUser", data.user.email);
+            localStorage.setItem("loggedUserData", JSON.stringify(data.user));
 
-        localStorage.setItem(
-            "loggedInUser",
-            email
-        );
+            message.textContent = "✅ " + (data.message || "Login successful!");
+            message.style.color = "#16a34a";
 
-
-        message.textContent =
-            "✅ Login successful!";
-
-        message.style.color = "#16a34a";
-
-
-        setTimeout(() => {
-
-            closeLogin();
-
-            updateLoginUI();
-
-        }, 500);
-
-    }
-
-    else {
-
-        message.textContent =
-            "❌ Invalid email or password.";
-
+            setTimeout(() => {
+                closeLogin();
+                updateLoginUI();
+            }, 600);
+        } else {
+            message.textContent = "❌ " + (data.message || "Invalid email or password.");
+            message.style.color = "#dc2626";
+        }
+    } catch (err) {
+        console.error("Login request failed:", err);
+        message.textContent = "❌ Unable to connect to server. Please try again.";
         message.style.color = "#dc2626";
-
     }
-
 }
 
 

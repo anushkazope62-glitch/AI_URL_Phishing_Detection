@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { API_BASE } from "../utils/config";
 
 function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "register" }) {
   const { t } = useLanguage();
@@ -63,7 +64,7 @@ function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "register" })
 
       setLoading(true);
       try {
-        const response = await fetch("https://ai-url-phishing-detection.onrender.com/register", {
+        const response = await fetch(`${API_BASE}/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -95,7 +96,7 @@ function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "register" })
       // Login mode
       setLoading(true);
       try {
-        const response = await fetch("https://ai-url-phishing-detection.onrender.com/login", {
+        const response = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

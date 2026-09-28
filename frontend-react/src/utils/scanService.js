@@ -1,4 +1,4 @@
-const API_BASE = "https://ai-url-phishing-detection.onrender.com";
+import { API_BASE } from "./config";
 
 export const getLocalScans = (userId) => {
   if (!userId) return [];

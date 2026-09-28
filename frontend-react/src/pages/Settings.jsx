@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { clearUserScansApi } from "../utils/scanService";
 import { useLanguage } from "../context/LanguageContext";
+import { API_BASE } from "../utils/config";
 
 function Settings({ loggedInUser, onLoginPrompt }) {
   const { t, language, setLanguage } = useLanguage();
@@ -17,6 +18,20 @@ function Settings({ loggedInUser, onLoginPrompt }) {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("darkMode") === "true";
   });
+
+  // Account Security state
+  const [profileName, setProfileName] = useState(loggedInUser?.name || "");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState({ text: "", type: "" });
+
+  useEffect(() => {
+    if (loggedInUser?.name) {
+      setProfileName(loggedInUser.name);
+    }
+  }, [loggedInUser]);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
@@ -39,6 +54,63 @@ function Settings({ loggedInUser, onLoginPrompt }) {
     const nextVal = !saveHistory;
     setSaveHistory(nextVal);
     localStorage.setItem(`saveHistory_${userKey}`, String(nextVal));
+  };
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    if (!loggedInUser) {
+      if (onLoginPrompt) onLoginPrompt();
+      return;
+    }
+
+    setProfileMessage({ text: "", type: "" });
+
+    if (newPassword && newPassword.length < 6) {
+      setProfileMessage({ text: "New password must be at least 6 characters long.", type: "danger" });
+      return;
+    }
+
+    if (newPassword && newPassword !== confirmPassword) {
+      setProfileMessage({ text: "New passwords do not match.", type: "danger" });
+      return;
+    }
+
+    if (newPassword && !currentPassword) {
+      setProfileMessage({ text: "Please enter your current password to set a new password.", type: "danger" });
+      return;
+    }
+
+    setProfileLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE}/update-profile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: loggedInUser.id,
+          name: profileName.trim(),
+          current_password: currentPassword || null,
+          new_password: newPassword || null,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.user) {
+        localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        setProfileMessage({ text: data.message || "Profile updated successfully!", type: "success" });
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        setProfileMessage({ text: data.message || "Failed to update profile.", type: "danger" });
+      }
+    } catch (err) {
+      console.error(err);
+      setProfileMessage({ text: "Unable to connect to server. Please try again.", type: "danger" });
+    } finally {
+      setProfileLoading(false);
+    }
   };
 
   const handleClearHistory = async () => {
@@ -69,6 +141,83 @@ function Settings({ loggedInUser, onLoginPrompt }) {
           </p>
         </div>
       </div>
+
+      {/* ACCOUNT & SECURITY PROFILE (Only for logged-in users) */}
+      {loggedInUser && (
+        <div className="settings-card">
+          <div className="settings-header">
+            <div>
+              <h2>🛡️ Account & Password Security</h2>
+              <p>Manage your account name and update your secure access password</p>
+            </div>
+          </div>
+
+          {profileMessage.text && (
+            <div
+              className={`auth-alert ${
+                profileMessage.type === "success" ? "success-alert" : "danger-alert"
+              }`}
+              style={{ marginBottom: "1rem" }}
+            >
+              {profileMessage.type === "success" ? "✅" : "⚠️"} {profileMessage.text}
+            </div>
+          )}
+
+          <form onSubmit={handleUpdateProfile} className="auth-form" style={{ maxWidth: "600px" }}>
+            <div className="form-group">
+              <label>Registered Email</label>
+              <input type="email" value={loggedInUser.email} disabled readOnly style={{ opacity: 0.7 }} />
+            </div>
+
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                placeholder="Your full name"
+                required
+              />
+            </div>
+
+            <hr style={{ borderColor: "rgba(255,255,255,0.1)", margin: "1rem 0" }} />
+
+            <div className="form-group">
+              <label>Current Password (leave blank if not changing password)</label>
+              <input
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter current password"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>New Password (min 6 characters)</label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Enter new password"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Confirm New Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter new password"
+              />
+            </div>
+
+            <button type="submit" className="auth-submit-btn" disabled={profileLoading} style={{ marginTop: "0.5rem" }}>
+              {profileLoading ? "Saving Changes..." : "Save Profile & Password"}
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* GENERAL PREFERENCES */}
       <div className="settings-card">

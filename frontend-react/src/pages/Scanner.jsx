@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { getLocalScans, setLocalScans } from "../utils/scanService";
 import { useLanguage } from "../context/LanguageContext";
+import { API_BASE, getScreenshotUrl } from "../utils/config";
 
 function Scanner({ loggedInUser, onLoginPrompt }) {
   const { t } = useLanguage();
@@ -70,7 +71,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
     setWebpageAnalysis(null);
 
     try {
-      const response = await fetch("https://ai-url-phishing-detection.onrender.com/screenshot", {
+      const response = await fetch(`${API_BASE}/screenshot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +118,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
     try {
       // Small natural loading delay so the scanning feels realistic & thorough
       const [response] = await Promise.all([
-        fetch("https://ai-url-phishing-detection.onrender.com/predict", {
+        fetch(`${API_BASE}/predict`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -551,9 +552,15 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
                   title="Click to view enlarged screenshot"
                 >
                   <img
-                    src={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
+                    src={getScreenshotUrl(webpageAnalysis.screenshot_url)}
                     alt="Visual Analysis Screenshot"
                     className="webpage-screenshot"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      if (result?.url) {
+                        e.currentTarget.src = `https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}?w=1280`;
+                      }
+                    }}
                   />
                   <div className="screenshot-zoom-overlay">
                     <span className="screenshot-zoom-badge">🔍 Click to Enlarge View</span>
@@ -608,7 +615,7 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
               </div>
               <div className="screenshot-modal-actions">
                 <a
-                  href={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
+                  href={getScreenshotUrl(webpageAnalysis.screenshot_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="screenshot-modal-newtab-btn"
@@ -628,9 +635,15 @@ function Scanner({ loggedInUser, onLoginPrompt }) {
 
             <div className="screenshot-modal-image-wrapper">
               <img
-                src={`https://ai-url-phishing-detection.onrender.com${webpageAnalysis.screenshot_url}`}
+                src={getScreenshotUrl(webpageAnalysis.screenshot_url)}
                 alt="Enlarged Webpage Screenshot"
                 className="screenshot-modal-image"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  if (result?.url) {
+                    e.currentTarget.src = `https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}?w=1280`;
+                  }
+                }}
               />
             </div>
           </div>
